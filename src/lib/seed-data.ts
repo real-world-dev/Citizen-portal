@@ -1,0 +1,340 @@
+import type { Organization, Proposal } from "@/types";
+
+// Default demo tenant: Elda (Alicante, Spain), plus a neighboring town so the
+// "citizens can browse requests across every town" rule has something to show.
+export const ORGANIZATIONS: Organization[] = [
+  {
+    id: "org_elda",
+    slug: "elda",
+    name: "Elda",
+    region: "Alicante",
+    country: "Spain",
+    population: 53000,
+    licenseActive: true,
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+  {
+    id: "org_petrer",
+    slug: "petrer",
+    name: "Petrer",
+    region: "Alicante",
+    country: "Spain",
+    population: 34000,
+    licenseActive: true,
+    createdAt: "2025-01-01T00:00:00.000Z",
+  },
+];
+
+export const DEFAULT_ORG_SLUG = "elda";
+
+function daysAgo(n: number): string {
+  const d = new Date();
+  d.setDate(d.getDate() - n);
+  return d.toISOString();
+}
+
+// 15 realistic sample proposals spread across categories, statuses, and the
+// last ~45 days, so the admin dashboard's trend chart has something to show
+// out of the box.
+export const SEED_PROPOSALS: Proposal[] = [
+  {
+    id: "prop_001",
+    orgId: "org_elda",
+    authorId: "user_demo_1",
+    authorName: "Marisol Torres",
+    originalText:
+      "the crosswalk by the ceip azorin school is dangerous cars dont stop and my kid almost got hit twice this month somebody needs to do something",
+    refinedTitle: "Install a raised pedestrian crossing near CEIP Azorín",
+    refinedText:
+      "Residents report that the crosswalk near CEIP Azorín is unsafe: vehicles frequently fail to stop for pedestrians, and there have been multiple near-miss incidents involving schoolchildren this month. We request a raised crossing, improved signage, and/or a school-zone speed camera to protect students during arrival and dismissal.",
+    category: "public_safety",
+    urgency: "high",
+    sentiment: "negative",
+    status: "in_review",
+    upvotes: 47,
+    duplicateOfId: null,
+    locationLabel: "Calle Azorín, near CEIP Azorín",
+    createdAt: daysAgo(3),
+    updatedAt: daysAgo(1),
+  },
+  {
+    id: "prop_002",
+    orgId: "org_elda",
+    authorId: "user_demo_2",
+    authorName: "Javier Moll",
+    originalText:
+      "the trash cans on avenida de novelda are always overflowing its disgusting and smells bad especially in summer please collect more often",
+    refinedTitle: "Increase waste collection frequency on Avenida de Novelda",
+    refinedText:
+      "Public waste bins along Avenida de Novelda regularly overflow between collections, creating odor and hygiene issues, especially during warmer months. We request more frequent collection on this route, or additional bin capacity, to keep the area clean for residents and businesses.",
+    category: "sanitation_waste",
+    urgency: "medium",
+    sentiment: "negative",
+    status: "scheduled",
+    upvotes: 32,
+    duplicateOfId: null,
+    locationLabel: "Avenida de Novelda",
+    createdAt: daysAgo(12),
+    updatedAt: daysAgo(4),
+  },
+  {
+    id: "prop_003",
+    orgId: "org_elda",
+    authorId: "user_demo_3",
+    authorName: "Carmen Ibáñez",
+    originalText:
+      "can we PLEASE get more benches and shade in parque de jose maria molto the sun is brutal for elderly people who want to sit down",
+    refinedTitle: "Add shaded seating in Parque de José María Moltó",
+    refinedText:
+      "Parque de José María Moltó currently has limited shaded seating, making it difficult for elderly residents and families to rest comfortably during warmer parts of the day. We request additional benches placed under existing tree cover, or new shade structures, to make the park more accessible year-round.",
+    category: "parks_environment",
+    urgency: "low",
+    sentiment: "neutral",
+    status: "received",
+    upvotes: 21,
+    duplicateOfId: null,
+    locationLabel: "Parque de José María Moltó",
+    createdAt: daysAgo(6),
+    updatedAt: daysAgo(6),
+  },
+  {
+    id: "prop_004",
+    orgId: "org_elda",
+    authorId: "user_demo_4",
+    authorName: "Diego Ferrández",
+    originalText:
+      "streetlights on calle colon have been out for weeks its pitch black and honestly kind of scary walking home",
+    refinedTitle: "Repair non-functioning streetlights on Calle Colón",
+    refinedText:
+      "Several streetlights on Calle Colón have been non-functional for multiple weeks, leaving the street poorly lit at night and reducing residents' sense of safety when walking home. We request an inspection and prompt repair of the affected fixtures.",
+    category: "public_safety",
+    urgency: "high",
+    sentiment: "negative",
+    status: "done",
+    upvotes: 18,
+    duplicateOfId: null,
+    locationLabel: "Calle Colón",
+    createdAt: daysAgo(30),
+    updatedAt: daysAgo(20),
+  },
+  {
+    id: "prop_005",
+    orgId: "org_elda",
+    authorId: "user_demo_5",
+    authorName: "Lucía Pastor",
+    originalText:
+      "we need a dog park!!! elda has zero off leash areas and its not fair to dog owners who pay taxes too",
+    refinedTitle: "Create a designated off-leash dog park",
+    refinedText:
+      "Elda currently has no designated off-leash area for dogs, which limits options for residents with pets. We request that the town identify a suitable green space to develop into a fenced dog park with waste stations and water access.",
+    category: "community_culture",
+    urgency: "low",
+    sentiment: "neutral",
+    status: "in_review",
+    upvotes: 39,
+    duplicateOfId: null,
+    locationLabel: null,
+    createdAt: daysAgo(9),
+    updatedAt: daysAgo(2),
+  },
+  {
+    id: "prop_006",
+    orgId: "org_elda",
+    authorId: "user_demo_6",
+    authorName: "Antonio Beneit",
+    originalText:
+      "huge pothole on carretera de sax basically a crater my car got damaged already this needs fixing asap",
+    refinedTitle: "Repair large pothole on Carretera de Sax",
+    refinedText:
+      "A large, deep pothole on Carretera de Sax has already caused vehicle damage and poses a road-safety hazard. We request urgent repair of this section of road before further incidents occur.",
+    category: "roads_transport",
+    urgency: "high",
+    sentiment: "negative",
+    status: "scheduled",
+    upvotes: 54,
+    duplicateOfId: null,
+    locationLabel: "Carretera de Sax",
+    createdAt: daysAgo(15),
+    updatedAt: daysAgo(5),
+  },
+  {
+    id: "prop_007",
+    orgId: "org_elda",
+    authorId: "user_demo_1",
+    authorName: "Marisol Torres",
+    originalText:
+      "another pothole this time near the roundabout by carretera de sax same road as before its getting worse",
+    refinedTitle: "Additional pothole reported near Carretera de Sax roundabout",
+    refinedText:
+      "A second pothole has developed near the roundabout on Carretera de Sax, in the same general area as a previously reported repair request. Residents note the road surface appears to be deteriorating further and request this be addressed alongside the existing repair.",
+    category: "roads_transport",
+    urgency: "medium",
+    sentiment: "negative",
+    status: "received",
+    upvotes: 11,
+    duplicateOfId: "prop_006",
+    locationLabel: "Carretera de Sax (roundabout)",
+    createdAt: daysAgo(8),
+    updatedAt: daysAgo(8),
+  },
+  {
+    id: "prop_008",
+    orgId: "org_elda",
+    authorId: "user_demo_7",
+    authorName: "Rosa Amorós",
+    originalText:
+      "water pressure in the barrio de la fuente area has been really low for like 2 weeks is something broken",
+    refinedTitle: "Investigate low water pressure in Barrio de la Fuente",
+    refinedText:
+      "Residents in the Barrio de la Fuente area report persistently low water pressure over the past two weeks. We request an inspection of the local water infrastructure to identify and resolve the cause.",
+    category: "utilities",
+    urgency: "medium",
+    sentiment: "negative",
+    status: "in_progress",
+    upvotes: 26,
+    duplicateOfId: null,
+    locationLabel: "Barrio de la Fuente",
+    createdAt: daysAgo(18),
+    updatedAt: daysAgo(3),
+  },
+  {
+    id: "prop_009",
+    orgId: "org_elda",
+    authorId: "user_demo_8",
+    authorName: "Pau Sempere",
+    originalText:
+      "would be amazing to have free wifi in plaza de la constitucion so many students study outside there in the evenings",
+    refinedTitle: "Provide free public Wi-Fi in Plaza de la Constitución",
+    refinedText:
+      "Plaza de la Constitución is a popular evening study and gathering spot for students. We request the installation of free public Wi-Fi to support this use and encourage more community activity in the square.",
+    category: "community_culture",
+    urgency: "low",
+    sentiment: "positive",
+    status: "received",
+    upvotes: 15,
+    duplicateOfId: null,
+    locationLabel: "Plaza de la Constitución",
+    createdAt: daysAgo(4),
+    updatedAt: daysAgo(4),
+  },
+  {
+    id: "prop_010",
+    orgId: "org_elda",
+    authorId: "user_demo_9",
+    authorName: "Elena Vidal",
+    originalText:
+      "the empty lot on calle de la virgen has been abandoned for years full of weeds and trash could this become affordable housing or a community garden",
+    refinedTitle: "Repurpose vacant lot on Calle de la Virgen",
+    refinedText:
+      "A long-vacant, overgrown lot on Calle de la Virgen has become a source of litter accumulation. We request the town evaluate options for repurposing the site — for example as affordable housing or a community garden — rather than leaving it unused.",
+    category: "housing_urban",
+    urgency: "low",
+    sentiment: "neutral",
+    status: "in_review",
+    upvotes: 23,
+    duplicateOfId: null,
+    locationLabel: "Calle de la Virgen",
+    createdAt: daysAgo(22),
+    updatedAt: daysAgo(10),
+  },
+  {
+    id: "prop_011",
+    orgId: "org_petrer",
+    authorId: "user_demo_10",
+    authorName: "Nuria Cantó",
+    originalText:
+      "bike lane on avenida de madrid just stops in the middle of nowhere makes no sense and is dangerous when it merges back with cars",
+    refinedTitle: "Extend and reconnect bike lane on Avenida de Madrid",
+    refinedText:
+      "The bike lane on Avenida de Madrid ends abruptly mid-route, forcing cyclists to merge unpredictably with vehicle traffic. We request the lane be extended or better connected to improve cyclist safety along this corridor.",
+    category: "roads_transport",
+    urgency: "medium",
+    sentiment: "negative",
+    status: "received",
+    upvotes: 29,
+    duplicateOfId: null,
+    locationLabel: "Avenida de Madrid, Petrer",
+    createdAt: daysAgo(7),
+    updatedAt: daysAgo(7),
+  },
+  {
+    id: "prop_012",
+    orgId: "org_petrer",
+    authorId: "user_demo_11",
+    authorName: "Salvador Mira",
+    originalText:
+      "recycling bins near the market are always full by wednesday can we get bigger ones or picked up twice a week",
+    refinedTitle: "Expand recycling capacity near the municipal market",
+    refinedText:
+      "Recycling bins near the municipal market reach capacity well before the next scheduled collection, typically by midweek. We request either larger bins or a twice-weekly collection schedule for this location.",
+    category: "sanitation_waste",
+    urgency: "low",
+    sentiment: "neutral",
+    status: "scheduled",
+    upvotes: 17,
+    duplicateOfId: null,
+    locationLabel: "Municipal Market, Petrer",
+    createdAt: daysAgo(14),
+    updatedAt: daysAgo(6),
+  },
+  {
+    id: "prop_013",
+    orgId: "org_petrer",
+    authorId: "user_demo_12",
+    authorName: "Isabel Requena",
+    originalText:
+      "so grateful the town fixed the playground equipment in parque lo ferrandez so fast after we reported it thank you!!",
+    refinedTitle: "Thank you for the prompt playground repair in Parque Lo Ferrández",
+    refinedText:
+      "Residents want to acknowledge the town's quick response in repairing playground equipment at Parque Lo Ferrández. The community appreciates the fast turnaround and would welcome similarly proactive maintenance in the future.",
+    category: "parks_environment",
+    urgency: "low",
+    sentiment: "positive",
+    status: "done",
+    upvotes: 41,
+    duplicateOfId: null,
+    locationLabel: "Parque Lo Ferrández, Petrer",
+    createdAt: daysAgo(40),
+    updatedAt: daysAgo(35),
+  },
+  {
+    id: "prop_014",
+    orgId: "org_petrer",
+    authorId: "user_demo_13",
+    authorName: "Hector Rico",
+    originalText:
+      "noise from the industrial area near polígono industrial is really bad at night affecting sleep for everyone nearby something needs to change about operating hours",
+    refinedTitle: "Address nighttime noise from Polígono Industrial",
+    refinedText:
+      "Residents near the Polígono Industrial report significant nighttime noise disruption affecting sleep. We request the town review permitted operating hours or noise-mitigation requirements for facilities in this zone.",
+    category: "public_safety",
+    urgency: "medium",
+    sentiment: "negative",
+    status: "in_review",
+    upvotes: 33,
+    duplicateOfId: null,
+    locationLabel: "Polígono Industrial, Petrer",
+    createdAt: daysAgo(11),
+    updatedAt: daysAgo(2),
+  },
+  {
+    id: "prop_015",
+    orgId: "org_elda",
+    authorId: "user_demo_14",
+    authorName: "Teresa Galvañ",
+    originalText:
+      "this app is a joke townhall never listens to anyone waste of time honestly why bother",
+    refinedTitle: "Concern about responsiveness to citizen requests",
+    refinedText:
+      "A resident expressed frustration about not seeing visible follow-through on past citizen requests and would like clearer, more consistent communication from the town on request status and outcomes.",
+    category: "other",
+    urgency: "low",
+    sentiment: "negative",
+    status: "received",
+    upvotes: 6,
+    duplicateOfId: null,
+    locationLabel: null,
+    createdAt: daysAgo(1),
+    updatedAt: daysAgo(1),
+  },
+];

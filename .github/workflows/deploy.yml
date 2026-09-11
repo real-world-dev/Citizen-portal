@@ -1,0 +1,55 @@
+name: Deploy to Vercel
+
+# Auto-deploys main to Vercel on every push, so you always have a live URL
+# to check results at. Requires three repo secrets — see README.md
+# "Auto-deploy with GitHub Actions" for exactly how to get each one:
+#   VERCEL_TOKEN     — from vercel.com/account/tokens
+#   VERCEL_ORG_ID    — from .vercel/project.json after `vercel link` locally
+#   VERCEL_PROJECT_ID — from .vercel/project.json after `vercel link` locally
+#
+# Until those secrets are added, this workflow will fail at the "Pull Vercel
+# environment" step — that's expected, not a bug in the app. Everything else
+# (CI build in ci.yml) works with zero secrets.
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    environment:
+      name: production
+      url: ${{ steps.deploy.outputs.url }}
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install Vercel CLI
+        run: npm install --global vercel@latest
+
+      - name: Pull Vercel environment
+        run: vercel pull --yes --environment=production --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Build project artifacts
+        run: vercel build --prod --token=${{ secrets.VERCEL_TOKEN }}
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
+
+      - name: Deploy to Vercel
+        id: deploy
+        run: |
+          url=$(vercel deploy --prebuilt --prod --token=${{ secrets.VERCEL_TOKEN }})
+          echo "url=$url" >> "$GITHUB_OUTPUT"
+          echo "Deployed to: $url"
+        env:
+          VERCEL_ORG_ID: ${{ secrets.VERCEL_ORG_ID }}
+          VERCEL_PROJECT_ID: ${{ secrets.VERCEL_PROJECT_ID }}
